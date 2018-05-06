@@ -169,7 +169,7 @@ query becomes...
                             },
                             {
                                 Bar: {
-                                    [Op.neq]: "Ipsum"
+                                    [Op.ne]: "Ipsum"
                                 }
                             }
                         ]
