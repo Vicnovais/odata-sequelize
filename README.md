@@ -1,4 +1,4 @@
-# sequelize-odata-parser
+# odata-sequelize
 
 ## Objective
 
