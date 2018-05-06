@@ -1,5 +1,6 @@
 # odata-sequelize
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 [![NPM](https://nodei.co/npm/odata-sequelize.png?compact=true)](https://nodei.co/npm/odata-sequelize/)
 
 ## Objective
