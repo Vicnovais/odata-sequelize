@@ -17,7 +17,7 @@ This library is intended to take an OData query string as a parameter and transf
 
 Simply run a npm command to install it in your project:
 
-    npm install sequelize-odata-parser
+    npm install odata-sequelize
 
 ## How does it work?
 
