@@ -1,6 +1,6 @@
 {
   "name": "odata-sequelize",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "OData parser for Sequelize.JS",
   "main": "index.js",
   "scripts": {
@@ -12,7 +12,7 @@
     "sequelizejs"
   ],
   "author": "Victor Novais <vicnovais@gmail.com>",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "chai": "^4.1.2",
     "mocha": "^5.1.1",
