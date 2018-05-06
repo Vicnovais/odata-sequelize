@@ -135,7 +135,7 @@ query becomes...
 ```javascript
     var parseOData = require('sequelize-odata-parser');
     var sequelize = require('sequelize');
-    var query = parseOData("$filter=(Foo eq 'Test' or Bar eq 'Test') and ((Foo neq 'Lorem' or Bar neq 'Ipsum') and (Year gt 2017))", sequelize);
+    var query = parseOData("$filter=(Foo eq 'Test' or Bar eq 'Test') and ((Foo ne 'Lorem' or Bar ne 'Ipsum') and (Year gt 2017))", sequelize);
 ```
 
 query becomes...
@@ -164,7 +164,7 @@ query becomes...
                         [Op.or]: [
                             {
                                 Foo: {
-                                    [Op.neq]: "Lorem"
+                                    [Op.ne]: "Lorem"
                                 },
                             },
                             {
