@@ -190,7 +190,7 @@ query becomes...
 ```javascript
     var parseOData = require('odata-sequelize');
     var sequelize = require('sequelize');
-    var query = parseOData("$filter=Foo eq 'Test' and Date gt datetime'2012-09-27T21:12:59'");
+    var query = parseOData("$filter=Foo eq 'Test' and Date gt datetime'2012-09-27T21:12:59'", sequelize);
 ```
 
 query becomes...
@@ -277,7 +277,7 @@ query becomes...
 ```javascript
     var parseOData = require('odata-sequelize');
     var sequelize = require('sequelize');
-    var query = parseOData("$filter=startswith('Foo', Name) and Bar eq 'Test'");
+    var query = parseOData("$filter=startswith('Foo', Name) and Bar eq 'Test'", sequelize);
 ```
 
 query becomes...
@@ -306,7 +306,7 @@ query becomes...
 ```javascript
     var parseOData = require('odata-sequelize');
     var sequelize = require('sequelize');
-    var query = parseOData("$filter=trim(Name) eq 'Foo' and Bar eq 'Test'");
+    var query = parseOData("$filter=trim(Name) eq 'Foo' and Bar eq 'Test'", sequelize);
 ```
 
 query becomes...
@@ -344,7 +344,7 @@ query becomes...
 ```javascript
     var parseOData = require('odata-sequelize');
     var sequelize = require('sequelize');
-    var query = parseOData("$filter=tolower(Name) eq 'foobaz' and Name eq 'bar'");
+    var query = parseOData("$filter=tolower(Name) eq 'foobaz' and Name eq 'bar'", sequelize);
 ```
 
 query becomes...
@@ -382,7 +382,7 @@ query becomes...
 ```javascript
     var parseOData = require('odata-sequelize');
     var sequelize = require('sequelize');
-    var query = parseOData("$filter=toupper(Name) eq 'FOOBAZ' and Name eq 'bar'");
+    var query = parseOData("$filter=toupper(Name) eq 'FOOBAZ' and Name eq 'bar'", sequelize);
 ```
 
 query becomes...
@@ -421,7 +421,7 @@ query becomes...
 ```javascript
     var parseOData = require('odata-sequelize');
     var sequelize = require('sequelize');
-    var query = parseOData("$filter=year(StartDate) gt 2017");
+    var query = parseOData("$filter=year(StartDate) gt 2017", sequelize);
 ```
 
 becomes...
