@@ -58,7 +58,8 @@ var helpers = {
     },
 
     preOrderTraversal: (root, baseObj, operator, sequelize) => {
-        var operator = operator || helpers.getOperator(root.type, sequelize);
+        var strOperator = root.type === "functioncall" ? root.func : root.type;
+        var operator = operator || helpers.getOperator(strOperator, sequelize);
 
         if (root.type === "functioncall") {
             helpers.parseFunctionCall(root, baseObj, operator, sequelize);
