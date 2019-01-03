@@ -1,3 +1,17 @@
 language: node_js
 node_js:
- - "10"
+  - "10"
+jobs:
+  include:
+    - stage: test
+      name: test
+      script:
+        - npm test
+    - node_js: "10"
+      name: eslint
+      script:
+        - npm run eslint
+    - node_js: "10"
+      name: prettier
+      script:
+        - npm run prettier

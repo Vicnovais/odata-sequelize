@@ -1,0 +1,8 @@
+extends:
+  - airbnb-base
+  - plugin:prettier/recommended
+env:
+  jest: true
+rules:
+  # XXX This rule should be enforced.
+  no-param-reassign: off

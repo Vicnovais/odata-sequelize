@@ -1,4 +1,5 @@
 # odata-sequelize
+
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Build Status](https://travis-ci.org/Vicnovais/odata-sequelize.svg?branch=master)](https://travis-ci.org/Vicnovais/odata-sequelize)
 
@@ -6,13 +7,14 @@
 
 ## Objective
 
-This library is intended to take an OData query string as a parameter and transform it on a sequelize-compliant query.
+This library is intended to take an OData query string as a parameter and transform it on a
+sequelize-compliant query.
 
 ## Requirements
 
- - Node.JS
- - NPM
- - Sequelize.JS
+- Node.JS
+- NPM
+- Sequelize.JS
 
 ## Installing
 
@@ -22,85 +24,98 @@ Simply run a npm command to install it in your project:
 
 ## How does it work?
 
-The OData query string is first parsed by [node-odata-parser](https://github.com/auth0/node-odata-parser) and then the resulting object is recursively iterated to build a new object that is compliant to sequelize's standard.
+The OData query string is first parsed by
+[node-odata-parser](https://github.com/auth0/node-odata-parser) and then the resulting object is
+recursively iterated to build a new object that is compliant to sequelize's standard.
 
 ## Roadmap
 
 ### WIP
 
- - [ ] Test (Mocha)
- - [ ] Query in children tables
- - [ ] $expand
+- [ ] Test (Mocha)
+- [ ] Query in children tables
+- [ ] \$expand
 
 ### Boolean Operators
 
- - [x] AND
- - [x] OR
- - [ ] NOT
+- [x] AND
+- [x] OR
+- [ ] NOT
 
 ### Comparison Operators
 
- - [x] Equal (eq)
- - [x] Not Equal (ne)
- - [x] Greater Than (gt)
- - [x] Greater Than or Equal (ge)
- - [x] Less Than (lt)
- - [x] Less Than or Equal (le)
+- [x] Equal (eq)
+- [x] Not Equal (ne)
+- [x] Greater Than (gt)
+- [x] Greater Than or Equal (ge)
+- [x] Less Than (lt)
+- [x] Less Than or Equal (le)
 
 ### Functions
 
 1. String Functions
- - [x] substringof
- - [ ] endswith
- - [x] startswith
- - [x] tolower
- - [x] toupper
- - [x] trim
- - [ ] concat
- - [ ] substring
- - [ ] replace
- - [ ] indexof
+
+- [x] substringof
+- [ ] endswith
+- [x] startswith
+- [x] tolower
+- [x] toupper
+- [x] trim
+- [ ] concat
+- [ ] substring
+- [ ] replace
+- [ ] indexof
 
 2. Date Functions
- - [x] day
- - [x] hour
- - [x] minute
- - [x] month
- - [x] second
- - [x] year
+
+- [x] day
+- [x] hour
+- [x] minute
+- [x] month
+- [x] second
+- [x] year
 
 ### Others
 
- - [x] Complex query with precedence
- - [x] top
- - [x] select
- - [x] filter
- - [x] skip
- - [ ] expand
- - [ ] query children tables
- - [ ] test (Mocha)
+- [x] Complex query with precedence
+- [x] top
+- [x] select
+- [x] filter
+- [x] skip
+- [ ] expand
+- [ ] query children tables
+- [ ] test (Mocha)
 
 ## How to Use
 
-You just need to pass an OData query string as parameter with your sequelize object instance, and automagically it is converted to a sequelize query.
+You just need to pass an OData query string as parameter with your sequelize object instance, and
+automagically it is converted to a sequelize query.
 
 **Usage Example:**
+
 ```javascript
-    var parseOData = require('odata-sequelize');
-    var sequelize = require('sequelize');
-    var query = parseOData("$top=5&$skip=1&$select=Foo,Bar&$filter=Foo eq 'Test' or Bar eq 'Test'&$orderby=Foo desc", sequelize);
-    
-    // Supposing you have your sequelize model
-    Model.findAll(query);
+var parseOData = require("odata-sequelize");
+var sequelize = require("sequelize");
+var query = parseOData(
+  "$top=5&$skip=1&$select=Foo,Bar&$filter=Foo eq 'Test' or Bar eq 'Test'&$orderby=Foo desc",
+  sequelize
+);
+
+// Supposing you have your sequelize model
+Model.findAll(query);
 ```
 
 See the examples below to checkout what's created under the hood:
 
 **1) Simple Query with Top, Skip, Select, Filter and OrderBy**
+
 ```javascript
-    var parseOData = require('odata-sequelize');
-    var sequelize = require('sequelize');
-    var query = parseOData("$top=5&$skip=1&$select=Foo,Bar&$filter=Foo eq 'Test' or Bar eq 'Test'&$orderby=Foo desc", sequelize);
+var parseOData = require("odata-sequelize");
+var sequelize = require("sequelize");
+var query = parseOData(
+  "$top=5&$skip=1&$select=Foo,Bar&$filter=Foo eq 'Test' or Bar eq 'Test'&$orderby=Foo desc",
+  sequelize
+);
 ```
 
 query becomes...
@@ -133,9 +148,12 @@ query becomes...
 **2) Complex Query with Precedence**
 
 ```javascript
-    var parseOData = require('odata-sequelize');
-    var sequelize = require('sequelize');
-    var query = parseOData("$filter=(Foo eq 'Test' or Bar eq 'Test') and ((Foo ne 'Lorem' or Bar ne 'Ipsum') and (Year gt 2017))", sequelize);
+var parseOData = require("odata-sequelize");
+var sequelize = require("sequelize");
+var query = parseOData(
+  "$filter=(Foo eq 'Test' or Bar eq 'Test') and ((Foo ne 'Lorem' or Bar ne 'Ipsum') and (Year gt 2017))",
+  sequelize
+);
 ```
 
 query becomes...
@@ -187,10 +205,14 @@ query becomes...
 ```
 
 **3) Using Date**
+
 ```javascript
-    var parseOData = require('odata-sequelize');
-    var sequelize = require('sequelize');
-    var query = parseOData("$filter=Foo eq 'Test' and Date gt datetime'2012-09-27T21:12:59'", sequelize);
+var parseOData = require("odata-sequelize");
+var sequelize = require("sequelize");
+var query = parseOData(
+  "$filter=Foo eq 'Test' and Date gt datetime'2012-09-27T21:12:59'",
+  sequelize
+);
 ```
 
 query becomes...
@@ -217,9 +239,9 @@ query becomes...
 **4) startswith function**
 
 ```javascript
-    var parseOData = require('odata-sequelize');
-    var sequelize = require('sequelize');
-    var query = parseOData("$filter=startswith('lorem', Foo) and Bar eq 'Test'", sequelize);
+var parseOData = require("odata-sequelize");
+var sequelize = require("sequelize");
+var query = parseOData("$filter=startswith('lorem', Foo) and Bar eq 'Test'", sequelize);
 ```
 
 query becomes...
@@ -246,9 +268,9 @@ query becomes...
 **5) substringof function**
 
 ```javascript
-    var parseOData = require('odata-sequelize');
-    var sequelize = require('sequelize');
-    var query = parseOData("$filter=substringof('lorem', Foo) and Bar eq 'Test'", sequelize);
+var parseOData = require("odata-sequelize");
+var sequelize = require("sequelize");
+var query = parseOData("$filter=substringof('lorem', Foo) and Bar eq 'Test'", sequelize);
 ```
 
 query becomes...
@@ -275,9 +297,9 @@ query becomes...
 **6) startswith function**
 
 ```javascript
-    var parseOData = require('odata-sequelize');
-    var sequelize = require('sequelize');
-    var query = parseOData("$filter=startswith('Foo', Name) and Bar eq 'Test'", sequelize);
+var parseOData = require("odata-sequelize");
+var sequelize = require("sequelize");
+var query = parseOData("$filter=startswith('Foo', Name) and Bar eq 'Test'", sequelize);
 ```
 
 query becomes...
@@ -304,9 +326,9 @@ query becomes...
 **7) trim function**
 
 ```javascript
-    var parseOData = require('odata-sequelize');
-    var sequelize = require('sequelize');
-    var query = parseOData("$filter=trim(Name) eq 'Foo' and Bar eq 'Test'", sequelize);
+var parseOData = require("odata-sequelize");
+var sequelize = require("sequelize");
+var query = parseOData("$filter=trim(Name) eq 'Foo' and Bar eq 'Test'", sequelize);
 ```
 
 query becomes...
@@ -342,9 +364,9 @@ query becomes...
 **8) tolower function**
 
 ```javascript
-    var parseOData = require('odata-sequelize');
-    var sequelize = require('sequelize');
-    var query = parseOData("$filter=tolower(Name) eq 'foobaz' and Name eq 'bar'", sequelize);
+var parseOData = require("odata-sequelize");
+var sequelize = require("sequelize");
+var query = parseOData("$filter=tolower(Name) eq 'foobaz' and Name eq 'bar'", sequelize);
 ```
 
 query becomes...
@@ -380,9 +402,9 @@ query becomes...
 **9) toupper function**
 
 ```javascript
-    var parseOData = require('odata-sequelize');
-    var sequelize = require('sequelize');
-    var query = parseOData("$filter=toupper(Name) eq 'FOOBAZ' and Name eq 'bar'", sequelize);
+var parseOData = require("odata-sequelize");
+var sequelize = require("sequelize");
+var query = parseOData("$filter=toupper(Name) eq 'FOOBAZ' and Name eq 'bar'", sequelize);
 ```
 
 query becomes...
@@ -416,12 +438,14 @@ query becomes...
 ```
 
 **10) year, month, day, hour, minute, second function**
-- The same logic applies to all 6 date functions. The only difference resides in attribute object, whose "fn" property reflects the called function.
+
+- The same logic applies to all 6 date functions. The only difference resides in attribute object,
+  whose "fn" property reflects the called function.
 
 ```javascript
-    var parseOData = require('odata-sequelize');
-    var sequelize = require('sequelize');
-    var query = parseOData("$filter=year(StartDate) gt 2017", sequelize);
+var parseOData = require("odata-sequelize");
+var sequelize = require("sequelize");
+var query = parseOData("$filter=year(StartDate) gt 2017", sequelize);
 ```
 
 becomes...

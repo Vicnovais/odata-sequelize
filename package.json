@@ -4,7 +4,10 @@
   "description": "OData parser for Sequelize.JS",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --reporter spec"
+    "eslint": "eslint --max-warnings 0 .",
+    "prettier": "prettier --list-different '{**/,}*.{json,md,yml,yaml}'",
+    "start": "jest --watchAll --coverage",
+    "test": "jest --coverage"
   },
   "keywords": [
     "odata",
@@ -21,7 +24,14 @@
     "odata-parser": "^1.4.1"
   },
   "devDependencies": {
-    "chai": "^4.2.0",
-    "mocha": "^5.2.0"
+    "eslint": "^5.11.1",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-config-prettier": "^3.3.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-prettier": "^3.0.1",
+    "jest": "^23.6.0",
+    "prettier": "^1.15.3",
+    "sequelize": "^4.42.0",
+    "sqlite3": "^4.0.4"
   }
 }
