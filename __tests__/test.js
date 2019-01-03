@@ -45,4 +45,15 @@ describe("#odataParser", () => {
       order: [["name", "DESC"], ["ranking", "ASC"]]
     });
   });
+
+  it("should parse filter", () => {
+    const result = parser("$filter=age eq 42", sequelize);
+    expect(result).toStrictEqual({
+      where: {
+        age: {
+          [sequelize.Op.eq]: 42
+        }
+      }
+    });
+  });
 });
