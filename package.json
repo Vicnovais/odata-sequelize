@@ -6,7 +6,8 @@
   "scripts": {
     "eslint": "eslint --max-warnings 0 .",
     "prettier": "prettier --list-different '{**/,}*.{json,md,yml,yaml}'",
-    "test": "mocha --reporter spec"
+    "start": "jest --watchAll",
+    "test": "jest"
   },
   "keywords": [
     "odata",
@@ -23,13 +24,12 @@
     "odata-parser": "^1.4.1"
   },
   "devDependencies": {
-    "chai": "^4.2.0",
     "eslint": "^5.11.1",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-config-prettier": "^3.3.0",
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-prettier": "^3.0.1",
-    "mocha": "^5.2.0",
+    "jest": "^23.6.0",
     "prettier": "^1.15.3"
   }
 }
