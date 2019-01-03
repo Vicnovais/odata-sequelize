@@ -45,125 +45,23 @@ const customOperators = [
 ];
 let mappedValueOperators = [];
 
-const helpers = {
-  mapOperators: sequelize => {
-    mappedValueOperators = valueOperators.map(element => sequelize.Op[element]);
-  },
+function mapOperators(sequelize) {
+  mappedValueOperators = valueOperators.map(element => sequelize.Op[element]);
+}
 
-  getOperator: (strOperator, sequelize) => {
-    if (!sequelize.Op) throw new Error("Sequelize operator not found.");
+function getOperator(strOperator, sequelize) {
+  if (!sequelize.Op) throw new Error("Sequelize operator not found.");
 
-    const allOperators = objectOperators.concat(valueOperators).concat(customOperators);
-    if (!allOperators.includes(strOperator)) throw new Error("Operator not recognized.");
+  const allOperators = objectOperators.concat(valueOperators).concat(customOperators);
+  if (!allOperators.includes(strOperator)) throw new Error("Operator not recognized.");
 
-    const selectedOperator = sequelize.Op[strOperator];
+  const selectedOperator = sequelize.Op[strOperator];
 
-    if (!selectedOperator) {
-      switch (strOperator) {
-        case "substringof":
-        case "startswith":
-          return sequelize.Op.like;
-        case "tolower":
-        case "toupper":
-        case "trim":
-        case "year":
-        case "month":
-        case "day":
-        case "hour":
-        case "minute":
-        case "second":
-          return sequelize.Op.eq;
-        default:
-          throw new Error("Sequelize operator not found.");
-      }
-    } else return selectedOperator;
-  },
-
-  preOrderTraversal: (root, baseObj, operator, sequelize) => {
-    const strOperator = root.type === "functioncall" ? root.func : root.type;
-    operator = operator || helpers.getOperator(strOperator, sequelize);
-
-    if (root.type === "functioncall") {
-      helpers.parseFunctionCall(root, baseObj, operator, sequelize);
-    } else if (root.type === "property" || root.type === "literal") {
-      if (root.type === "property") {
-        baseObj.push({});
-        const { length } = baseObj;
-        baseObj[length - 1][root.name] = "";
-      } else {
-        const { length } = baseObj;
-        const key = Object.keys(baseObj[length - 1])[0];
-
-        if (Object.prototype.hasOwnProperty.call(baseObj[length - 1][key], "logic")) {
-          baseObj[length - 1][key].logic = root.value;
-        } else {
-          baseObj[length - 1][key] = root.value;
-        }
-      }
-    } else if (baseObj instanceof Array) {
-      baseObj.push({});
-
-      const { length } = baseObj;
-      baseObj[length - 1][operator] = [];
-    } else {
-      baseObj[operator] = [];
-    }
-
-    if (root.left) {
-      if (baseObj instanceof Array && baseObj.length > 0) {
-        const { length } = baseObj;
-        helpers.preOrderTraversal(root.left, baseObj[length - 1][operator], operator, sequelize);
-      } else {
-        helpers.preOrderTraversal(root.left, baseObj[operator], operator, sequelize);
-      }
-    }
-
-    if (root.right) {
-      if (baseObj instanceof Array && baseObj.length > 0) {
-        const { length } = baseObj;
-        helpers.preOrderTraversal(root.right, baseObj[length - 1][operator], operator, sequelize);
-      } else {
-        helpers.preOrderTraversal(root.right, baseObj[operator], operator, sequelize);
-      }
-    }
-
-    return baseObj;
-  },
-
-  transformTree: (root, sequelize) => {
-    if (!sequelize.Op) throw new Error("Sequelize operator not found.");
-
-    Object.getOwnPropertySymbols(root).forEach(rootSymbol => {
-      if (mappedValueOperators.includes(rootSymbol)) {
-        const tmp = root[rootSymbol];
-        delete root[rootSymbol];
-
-        const targetObj = tmp[0];
-        const key = Object.keys(targetObj)[0];
-        const value = targetObj[key];
-
-        if (!!value.constructor && value.constructor.name === "Where") {
-          [root] = tmp;
-        } else {
-          root[key] = {};
-          root[key][rootSymbol] = value;
-        }
-      } else {
-        root[rootSymbol].forEach((obj, index) => {
-          root[rootSymbol][index] = helpers.transformTree(obj, sequelize);
-        });
-      }
-    });
-
-    return root;
-  },
-
-  parseFunctionCall: (obj, root, operator, sequelize) => {
-    if (obj.type !== "functioncall") throw new Error("Type is not a functioncall.");
-
-    switch (obj.func) {
+  if (!selectedOperator) {
+    switch (strOperator) {
       case "substringof":
       case "startswith":
+        return sequelize.Op.like;
       case "tolower":
       case "toupper":
       case "trim":
@@ -173,91 +71,187 @@ const helpers = {
       case "hour":
       case "minute":
       case "second":
-        helpers.parseFunction(obj, root, operator, sequelize);
-        break;
+        return sequelize.Op.eq;
       default:
-        throw new Error("Function not found.");
+        throw new Error("Sequelize operator not found.");
     }
-  },
+  } else return selectedOperator;
+}
 
-  parseFunction: (obj, root, baseOperator, sequelize) => {
-    if (obj.type !== "functioncall") throw new Error("Type is not a functioncall.");
-    if (!Object.prototype.hasOwnProperty.call(obj, "func")) throw new Error("Function not found.");
-    if (!Object.prototype.hasOwnProperty.call(obj, "args")) throw new Error("Args not found.");
-    if (!sequelize.where) throw new Error("Sequelize where function not found.");
+function transformTree(root, sequelize) {
+  if (!sequelize.Op) throw new Error("Sequelize operator not found.");
 
-    const dbFunction = [
-      "tolower",
-      "toupper",
-      "trim",
-      "year",
-      "month",
-      "day",
-      "hour",
-      "minute",
-      "second"
-    ];
-    const { args } = obj;
-    const tmp = {};
-    let value = "";
-    const operator = baseOperator || helpers.getOperator(obj.func, sequelize);
-    const key = args.filter(t => Object.prototype.hasOwnProperty.call(t, "name"))[0].name;
-    const setValue = functionName => {
-      if (root instanceof Array) {
-        tmp[key] = sequelize.where(sequelize.fn(functionName, sequelize.col(key)), operator, value);
+  Object.getOwnPropertySymbols(root).forEach(rootSymbol => {
+    if (mappedValueOperators.includes(rootSymbol)) {
+      const tmp = root[rootSymbol];
+      delete root[rootSymbol];
+
+      const targetObj = tmp[0];
+      const key = Object.keys(targetObj)[0];
+      const value = targetObj[key];
+
+      if (!!value.constructor && value.constructor.name === "Where") {
+        [root] = tmp;
       } else {
-        root[key] = sequelize.where(
-          sequelize.fn(functionName, sequelize.col(key)),
-          operator,
-          value
-        );
+        root[key] = {};
+        root[key][rootSymbol] = value;
       }
-    };
-
-    if (root instanceof Array && !dbFunction.includes(obj.func)) {
-      const tmpObj = {};
-      tmpObj[operator] = [];
-      root.push(tmpObj);
-    } else if (root instanceof Array) {
-      root.push({});
     } else {
-      root[key] = {};
+      root[rootSymbol].forEach((obj, index) => {
+        root[rootSymbol][index] = transformTree(obj, sequelize);
+      });
     }
+  });
 
-    switch (obj.func) {
-      case "substringof":
-        value = `%${args[0].value}%`;
-        break;
-      case "startswith":
-        value = `${args[0].value}%`;
-        break;
-      case "tolower":
-      case "toupper":
-      case "trim":
-      case "year":
-      case "month":
-      case "day":
-      case "hour":
-      case "minute":
-      case "second":
-        setValue(obj.func);
-        break;
-      default:
-        throw new Error("Function not mapped.");
-    }
+  return root;
+}
 
+function parseFunction(obj, root, baseOperator, sequelize) {
+  if (obj.type !== "functioncall") throw new Error("Type is not a functioncall.");
+  if (!Object.prototype.hasOwnProperty.call(obj, "func")) throw new Error("Function not found.");
+  if (!Object.prototype.hasOwnProperty.call(obj, "args")) throw new Error("Args not found.");
+  if (!sequelize.where) throw new Error("Sequelize where function not found.");
+
+  const dbFunction = [
+    "tolower",
+    "toupper",
+    "trim",
+    "year",
+    "month",
+    "day",
+    "hour",
+    "minute",
+    "second"
+  ];
+  const { args } = obj;
+  const tmp = {};
+  let value = "";
+  const operator = baseOperator || getOperator(obj.func, sequelize);
+  const key = args.filter(t => Object.prototype.hasOwnProperty.call(t, "name"))[0].name;
+  const setValue = functionName => {
     if (root instanceof Array) {
-      if (!dbFunction.includes(obj.func)) {
-        tmp[key] = value;
-        root[root.length - 1][operator].push(tmp);
+      tmp[key] = sequelize.where(sequelize.fn(functionName, sequelize.col(key)), operator, value);
+    } else {
+      root[key] = sequelize.where(sequelize.fn(functionName, sequelize.col(key)), operator, value);
+    }
+  };
+
+  if (root instanceof Array && !dbFunction.includes(obj.func)) {
+    const tmpObj = {};
+    tmpObj[operator] = [];
+    root.push(tmpObj);
+  } else if (root instanceof Array) {
+    root.push({});
+  } else {
+    root[key] = {};
+  }
+
+  switch (obj.func) {
+    case "substringof":
+      value = `%${args[0].value}%`;
+      break;
+    case "startswith":
+      value = `${args[0].value}%`;
+      break;
+    case "tolower":
+    case "toupper":
+    case "trim":
+    case "year":
+    case "month":
+    case "day":
+    case "hour":
+    case "minute":
+    case "second":
+      setValue(obj.func);
+      break;
+    default:
+      throw new Error("Function not mapped.");
+  }
+
+  if (root instanceof Array) {
+    if (!dbFunction.includes(obj.func)) {
+      tmp[key] = value;
+      root[root.length - 1][operator].push(tmp);
+    } else {
+      root[root.length - 1] = tmp;
+    }
+  } else if (!dbFunction.includes(obj.func)) {
+    root[key][operator] = value;
+  }
+}
+
+function parseFunctionCall(obj, root, operator, sequelize) {
+  if (obj.type !== "functioncall") throw new Error("Type is not a functioncall.");
+
+  switch (obj.func) {
+    case "substringof":
+    case "startswith":
+    case "tolower":
+    case "toupper":
+    case "trim":
+    case "year":
+    case "month":
+    case "day":
+    case "hour":
+    case "minute":
+    case "second":
+      parseFunction(obj, root, operator, sequelize);
+      break;
+    default:
+      throw new Error("Function not found.");
+  }
+}
+
+function preOrderTraversal(root, baseObj, operator, sequelize) {
+  const strOperator = root.type === "functioncall" ? root.func : root.type;
+  operator = operator || getOperator(strOperator, sequelize);
+
+  if (root.type === "functioncall") {
+    parseFunctionCall(root, baseObj, operator, sequelize);
+  } else if (root.type === "property" || root.type === "literal") {
+    if (root.type === "property") {
+      baseObj.push({});
+      const { length } = baseObj;
+      baseObj[length - 1][root.name] = "";
+    } else {
+      const { length } = baseObj;
+      const key = Object.keys(baseObj[length - 1])[0];
+
+      if (Object.prototype.hasOwnProperty.call(baseObj[length - 1][key], "logic")) {
+        baseObj[length - 1][key].logic = root.value;
       } else {
-        root[root.length - 1] = tmp;
+        baseObj[length - 1][key] = root.value;
       }
-    } else if (!dbFunction.includes(obj.func)) {
-      root[key][operator] = value;
+    }
+  } else if (baseObj instanceof Array) {
+    baseObj.push({});
+
+    const { length } = baseObj;
+    baseObj[length - 1][operator] = [];
+  } else {
+    baseObj[operator] = [];
+  }
+
+  if (root.left) {
+    if (baseObj instanceof Array && baseObj.length > 0) {
+      const { length } = baseObj;
+      preOrderTraversal(root.left, baseObj[length - 1][operator], operator, sequelize);
+    } else {
+      preOrderTraversal(root.left, baseObj[operator], operator, sequelize);
     }
   }
-};
+
+  if (root.right) {
+    if (baseObj instanceof Array && baseObj.length > 0) {
+      const { length } = baseObj;
+      preOrderTraversal(root.right, baseObj[length - 1][operator], operator, sequelize);
+    } else {
+      preOrderTraversal(root.right, baseObj[operator], operator, sequelize);
+    }
+  }
+
+  return baseObj;
+}
 
 /**
  * Parse OData expression
@@ -326,8 +320,8 @@ function parseFilter($filter, sequelize) {
   if (!$filter) {
     return {};
   }
-  const tree = helpers.preOrderTraversal($filter, {}, null, sequelize);
-  const parsed = helpers.transformTree(tree, sequelize);
+  const tree = preOrderTraversal($filter, {}, null, sequelize);
+  const parsed = transformTree(tree, sequelize);
 
   return parsed !== {} ? { where: parsed } : {};
 }
@@ -364,7 +358,7 @@ module.exports = (string2Parse, sequelize) => {
   if (!sequelize) throw new Error("Sequelize instance is required.");
   if (!sequelize.Op) throw new Error("Sequelize operator not found.");
 
-  helpers.mapOperators(sequelize);
+  mapOperators(sequelize);
 
   const expression = parseExpression(string2Parse);
   const attributes = parseSelect(expression.$select);
