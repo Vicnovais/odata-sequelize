@@ -1,4 +1,4 @@
-const expect = require("chai").expect;
+const { expect } = require("chai");
 const parser = require("../index");
 const mockSequelize = require("./mock");
 

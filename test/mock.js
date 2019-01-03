@@ -1,4 +1,4 @@
-let Op = {
+const Op = {
   eq: Symbol("eq"),
   ne: Symbol("ne"),
   gte: Symbol("gte"),
@@ -14,7 +14,7 @@ let Op = {
   all: Symbol("all")
 };
 
-let sequelize = {};
+const sequelize = {};
 sequelize.Op = Op;
 
 module.exports = sequelize;
