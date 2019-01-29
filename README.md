@@ -32,7 +32,6 @@ recursively iterated to build a new object that is compliant to sequelize's stan
 
 ### WIP
 
-- [ ] Test (Mocha)
 - [ ] Query in children tables
 - [ ] \$expand
 
@@ -77,6 +76,8 @@ recursively iterated to build a new object that is compliant to sequelize's stan
 
 ### Others
 
+- [x] Test (Jest) - Thanks to @remcohaszing
+- [x] Lint & Prettier - Thanks to @remcohaszing
 - [x] Complex query with precedence
 - [x] top
 - [x] select
@@ -84,7 +85,6 @@ recursively iterated to build a new object that is compliant to sequelize's stan
 - [x] skip
 - [ ] expand
 - [ ] query children tables
-- [ ] test (Mocha)
 
 ## How to Use
 
