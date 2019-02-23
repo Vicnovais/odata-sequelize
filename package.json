@@ -1,12 +1,12 @@
 {
   "name": "odata-sequelize",
-  "version": "1.0.7",
+  "version": "1.0.9",
   "description": "OData parser for Sequelize.JS",
   "main": "index.js",
   "scripts": {
     "eslint": "eslint --max-warnings 0 .",
     "prettier": "prettier --list-different '{**/,}*.{json,md,yml,yaml}'",
-    "start": "jest --watchAll --coverage",
+    "start": "jest --watchAll --coverage --verbose=false",
     "test": "jest --coverage"
   },
   "keywords": [
