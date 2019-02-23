@@ -53,7 +53,7 @@ function getOperator(strOperator, sequelize) {
   if (!sequelize.Op) throw new Error("Sequelize operator not found.");
 
   const allOperators = objectOperators.concat(valueOperators).concat(customOperators);
-  if (!allOperators.includes(strOperator)) throw new Error("Operator not recognized: " + strOperator);
+  if (!allOperators.includes(strOperator)) throw new Error(`Operator not recognized: ${strOperator}`);
 
   const selectedOperator = sequelize.Op[strOperator];
 
@@ -164,6 +164,7 @@ function parseFunction(obj, root, baseOperator, sequelize) {
     case "second":
       setValue(obj.func);
       break;
+    default: break;
   }
 
   if (root instanceof Array) {
@@ -195,12 +196,13 @@ function parseFunctionCall(obj, root, operator, sequelize) {
     case "second":
       parseFunction(obj, root, operator, sequelize);
       break;
+    default: break;
   }
 }
 
 function preOrderTraversal(root, baseObj, operator, sequelize) {
   const strOperator = root.type === "functioncall" ? root.func : root.type;
-  if (root.type !== 'property' && root.type !== 'literal')
+  if (root.type !== "property" && root.type !== "literal")
     operator = strOperator ? getOperator(strOperator, sequelize) : operator;
 
   if (root.type === "functioncall") {

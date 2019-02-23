@@ -315,7 +315,8 @@ describe("#odataParser", () => {
   });
 
   it("should parse filter precedence 1", () => {
-    const result = parser("$filter=(foo eq '2019-02-12' and bar eq 'TK0001') or (foo eq '2019-02-12' and bar eq 'TK0003')", sequelize);
+    const result = parser("$filter=(foo eq '2019-02-12' and bar eq 'TK0001') or (foo eq '2019-02-12' and bar eq 'TK0003')", 
+          sequelize);
     expect(result).toStrictEqual({
       where: {
         [sequelize.Op.or]: [
@@ -323,12 +324,12 @@ describe("#odataParser", () => {
             [sequelize.Op.and]: [
               { 
                 foo: {
-                  [sequelize.Op.eq]: '2019-02-12'
+                  [sequelize.Op.eq]: "2019-02-12"
                 }
               },
               {
                 bar: {
-                  [sequelize.Op.eq]: 'TK0001'
+                  [sequelize.Op.eq]: "TK0001"
                 }
               }
             ]
@@ -337,12 +338,12 @@ describe("#odataParser", () => {
             [sequelize.Op.and]: [
               { 
                 foo: {
-                  [sequelize.Op.eq]: '2019-02-12'
+                  [sequelize.Op.eq]: "2019-02-12"
                 }
               },
               {
                 bar: {
-                  [sequelize.Op.eq]: 'TK0003'
+                  [sequelize.Op.eq]: "TK0003"
                 }
               }
             ]
@@ -353,36 +354,37 @@ describe("#odataParser", () => {
   });
 
   it("should parse filter precedence 2", () => {
-    const result = parser("$filter=(Foo eq 'Test' or Bar eq 'Test') and ((Foo ne 'Lorem' or Bar ne 'Ipsum') and (Year gt 2017))", sequelize);
+    const result = parser("$filter=(Foo eq 'Test' or Bar eq 'Test') and ((Foo ne 'Lorem' or Bar ne 'Ipsum') and (Year gt 2017))", 
+          sequelize);
     expect(result).toStrictEqual({
       where: {
         [sequelize.Op.and]: [
           {
             [sequelize.Op.or]: [
-              { 
+              {
                 Foo: {
-                  [sequelize.Op.eq]: 'Test'
+                  [sequelize.Op.eq]: "Test"
                 }
               },
               {
                 Bar: {
-                  [sequelize.Op.eq]: 'Test'
+                  [sequelize.Op.eq]: "Test"
                 }
               }
             ]
           },
           {
             [sequelize.Op.and]: [
-              { 
+              {
                 [sequelize.Op.or]: [
-                  { 
+                  {
                     Foo: {
-                      [sequelize.Op.ne]: 'Lorem'
+                      [sequelize.Op.ne]: "Lorem"
                     }
                   },
                   {
                     Bar: {
-                      [sequelize.Op.ne]: 'Ipsum'
+                      [sequelize.Op.ne]: "Ipsum"
                     }
                   }
                 ]
@@ -405,6 +407,7 @@ describe("#odataParser", () => {
   });
 
   it("should throw with unmapped function", () => {
-    expect(() => parser("$filter=endswith('foo', bar)", sequelize)).toThrow("Operator not recognized: endswith");
+    expect(() => parser("$filter=endswith('foo', bar)", sequelize))
+          .toThrow("Operator not recognized: endswith");
   });
 });
