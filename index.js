@@ -46,23 +46,24 @@ const customOperators = [
 let mappedValueOperators = [];
 
 function mapOperators(sequelize) {
-  mappedValueOperators = valueOperators.map(element => sequelize.Op[element]);
+  mappedValueOperators = valueOperators.map(element => sequelize.Sequelize.Op[element]);
+  sequelize.options.operatorsAliases = mappedValueOperators;
 }
 
 function getOperator(strOperator, sequelize) {
-  if (!sequelize.Op) throw new Error("Sequelize operator not found.");
+  if (!sequelize.Sequelize.Op) throw new Error("Sequelize operator not found.");
 
   const allOperators = objectOperators.concat(valueOperators).concat(customOperators);
   if (!allOperators.includes(strOperator))
     throw new Error(`Operator not recognized: ${strOperator}`);
 
-  const selectedOperator = sequelize.Op[strOperator];
+  const selectedOperator = sequelize.Sequelize.Op[strOperator];
 
   if (!selectedOperator) {
     switch (strOperator) {
       case "substringof":
       case "startswith":
-        return sequelize.Op.like;
+        return sequelize.Sequelize.Op.like;
       case "tolower":
       case "toupper":
       case "trim":
@@ -72,7 +73,7 @@ function getOperator(strOperator, sequelize) {
       case "hour":
       case "minute":
       case "second":
-        return sequelize.Op.eq;
+        return sequelize.Sequelize.Op.eq;
       default:
         throw new Error("Sequelize operator not found.");
     }
@@ -80,7 +81,7 @@ function getOperator(strOperator, sequelize) {
 }
 
 function transformTree(root, sequelize) {
-  if (!sequelize.Op) throw new Error("Sequelize operator not found.");
+  if (!sequelize.Sequelize.Op) throw new Error("Sequelize operator not found.");
 
   Object.getOwnPropertySymbols(root).forEach(rootSymbol => {
     if (mappedValueOperators.includes(rootSymbol)) {
@@ -317,7 +318,7 @@ function parseSkip($skip) {
  * @return {object} parsed object
  */
 function parseFilter($filter, sequelize) {
-  if (!sequelize.Op) throw new Error("Sequelize operator not found.");
+  if (!sequelize.Sequelize.Op) throw new Error("Sequelize operator not found.");
 
   if (!$filter) {
     return {};
@@ -358,7 +359,7 @@ function parseOrderBy($orderby) {
  */
 module.exports = (string2Parse, sequelize) => {
   if (!sequelize) throw new Error("Sequelize instance is required.");
-  if (!sequelize.Op) throw new Error("Sequelize operator not found.");
+  if (!sequelize.Sequelize.Op) throw new Error("Sequelize operator not found.");
 
   mapOperators(sequelize);
 
