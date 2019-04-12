@@ -53,7 +53,7 @@ describe("#odataParser", () => {
     expect(result).toStrictEqual({
       where: {
         age: {
-          [sequelize.Op.eq]: 42
+          [sequelize.Sequelize.Op.eq]: 42
         }
       }
     });
@@ -64,7 +64,7 @@ describe("#odataParser", () => {
     expect(result).toStrictEqual({
       where: {
         age: {
-          [sequelize.Op.ne]: 42
+          [sequelize.Sequelize.Op.ne]: 42
         }
       }
     });
@@ -75,7 +75,7 @@ describe("#odataParser", () => {
     expect(result).toStrictEqual({
       where: {
         age: {
-          [sequelize.Op.gt]: 42
+          [sequelize.Sequelize.Op.gt]: 42
         }
       }
     });
@@ -86,7 +86,7 @@ describe("#odataParser", () => {
     expect(result).toStrictEqual({
       where: {
         age: {
-          [sequelize.Op.lt]: 42
+          [sequelize.Sequelize.Op.lt]: 42
         }
       }
     });
@@ -97,7 +97,7 @@ describe("#odataParser", () => {
     expect(result).toStrictEqual({
       where: {
         foo: {
-          [sequelize.Op.like]: "%prefix%"
+          [sequelize.Sequelize.Op.like]: "%prefix%"
         }
       }
     });
@@ -108,7 +108,7 @@ describe("#odataParser", () => {
     expect(result).toStrictEqual({
       where: {
         foo: {
-          [sequelize.Op.like]: "prefix%"
+          [sequelize.Sequelize.Op.like]: "prefix%"
         }
       }
     });
@@ -127,7 +127,7 @@ describe("#odataParser", () => {
             ],
             fn: "tolower"
           },
-          comparator: sequelize.Op.eq,
+          comparator: sequelize.Sequelize.Op.eq,
           logic: "bar"
         }
       }
@@ -147,7 +147,7 @@ describe("#odataParser", () => {
             ],
             fn: "toupper"
           },
-          comparator: sequelize.Op.eq,
+          comparator: sequelize.Sequelize.Op.eq,
           logic: "bar"
         }
       }
@@ -167,7 +167,7 @@ describe("#odataParser", () => {
             ],
             fn: "trim"
           },
-          comparator: sequelize.Op.eq,
+          comparator: sequelize.Sequelize.Op.eq,
           logic: "bar"
         }
       }
@@ -187,7 +187,7 @@ describe("#odataParser", () => {
             ],
             fn: "year"
           },
-          comparator: sequelize.Op.eq,
+          comparator: sequelize.Sequelize.Op.eq,
           logic: 2000
         }
       }
@@ -207,7 +207,7 @@ describe("#odataParser", () => {
             ],
             fn: "month"
           },
-          comparator: sequelize.Op.eq,
+          comparator: sequelize.Sequelize.Op.eq,
           logic: 12
         }
       }
@@ -227,7 +227,7 @@ describe("#odataParser", () => {
             ],
             fn: "day"
           },
-          comparator: sequelize.Op.eq,
+          comparator: sequelize.Sequelize.Op.eq,
           logic: 12
         }
       }
@@ -247,7 +247,7 @@ describe("#odataParser", () => {
             ],
             fn: "hour"
           },
-          comparator: sequelize.Op.eq,
+          comparator: sequelize.Sequelize.Op.eq,
           logic: 12
         }
       }
@@ -267,7 +267,7 @@ describe("#odataParser", () => {
             ],
             fn: "minute"
           },
-          comparator: sequelize.Op.eq,
+          comparator: sequelize.Sequelize.Op.eq,
           logic: 12
         }
       }
@@ -287,7 +287,7 @@ describe("#odataParser", () => {
             ],
             fn: "second"
           },
-          comparator: sequelize.Op.eq,
+          comparator: sequelize.Sequelize.Op.eq,
           logic: 12
         }
       }
@@ -298,15 +298,15 @@ describe("#odataParser", () => {
     const result = parser("$filter=age eq 42 and type eq 'answer'", sequelize);
     expect(result).toStrictEqual({
       where: {
-        [sequelize.Op.and]: [
+        [sequelize.Sequelize.Op.and]: [
           {
             age: {
-              [sequelize.Op.eq]: 42
+              [sequelize.Sequelize.Op.eq]: 42
             }
           },
           {
             type: {
-              [sequelize.Op.eq]: "answer"
+              [sequelize.Sequelize.Op.eq]: "answer"
             }
           }
         ]
@@ -321,31 +321,31 @@ describe("#odataParser", () => {
     );
     expect(result).toStrictEqual({
       where: {
-        [sequelize.Op.or]: [
+        [sequelize.Sequelize.Op.or]: [
           {
-            [sequelize.Op.and]: [
+            [sequelize.Sequelize.Op.and]: [
               {
                 foo: {
-                  [sequelize.Op.eq]: "2019-02-12"
+                  [sequelize.Sequelize.Op.eq]: "2019-02-12"
                 }
               },
               {
                 bar: {
-                  [sequelize.Op.eq]: "TK0001"
+                  [sequelize.Sequelize.Op.eq]: "TK0001"
                 }
               }
             ]
           },
           {
-            [sequelize.Op.and]: [
+            [sequelize.Sequelize.Op.and]: [
               {
                 foo: {
-                  [sequelize.Op.eq]: "2019-02-12"
+                  [sequelize.Sequelize.Op.eq]: "2019-02-12"
                 }
               },
               {
                 bar: {
-                  [sequelize.Op.eq]: "TK0003"
+                  [sequelize.Sequelize.Op.eq]: "TK0003"
                 }
               }
             ]
@@ -362,40 +362,40 @@ describe("#odataParser", () => {
     );
     expect(result).toStrictEqual({
       where: {
-        [sequelize.Op.and]: [
+        [sequelize.Sequelize.Op.and]: [
           {
-            [sequelize.Op.or]: [
+            [sequelize.Sequelize.Op.or]: [
               {
                 Foo: {
-                  [sequelize.Op.eq]: "Test"
+                  [sequelize.Sequelize.Op.eq]: "Test"
                 }
               },
               {
                 Bar: {
-                  [sequelize.Op.eq]: "Test"
+                  [sequelize.Sequelize.Op.eq]: "Test"
                 }
               }
             ]
           },
           {
-            [sequelize.Op.and]: [
+            [sequelize.Sequelize.Op.and]: [
               {
-                [sequelize.Op.or]: [
+                [sequelize.Sequelize.Op.or]: [
                   {
                     Foo: {
-                      [sequelize.Op.ne]: "Lorem"
+                      [sequelize.Sequelize.Op.ne]: "Lorem"
                     }
                   },
                   {
                     Bar: {
-                      [sequelize.Op.ne]: "Ipsum"
+                      [sequelize.Sequelize.Op.ne]: "Ipsum"
                     }
                   }
                 ]
               },
               {
                 Year: {
-                  [sequelize.Op.gt]: 2017
+                  [sequelize.Sequelize.Op.gt]: 2017
                 }
               }
             ]
