@@ -134,7 +134,7 @@ describe("#odataParser", () => {
     });
   });
 
-  it("should parse filter toupper", () => {
+  it("should parse filter toupper eq", () => {
     const result = parser("$filter=toupper(foo) eq 'bar'", sequelize);
     expect(result).toMatchObject({
       where: {
@@ -154,7 +154,27 @@ describe("#odataParser", () => {
     });
   });
 
-  it("should parse filter trim", () => {
+  it("should parse filter toupper", () => {
+    const result = parser("$filter=toupper(foo) ne 'bar'", sequelize);
+    expect(result).toMatchObject({
+      where: {
+        foo: {
+          attribute: {
+            args: [
+              {
+                col: "foo"
+              }
+            ],
+            fn: "toupper"
+          },
+          comparator: sequelize.Sequelize.Op.ne,
+          logic: "bar"
+        }
+      }
+    });
+  });
+
+  it("should parse filter trim eq", () => {
     const result = parser("$filter=trim(foo) eq 'bar'", sequelize);
     expect(result).toMatchObject({
       where: {
@@ -174,7 +194,7 @@ describe("#odataParser", () => {
     });
   });
 
-  it("should parse filter year", () => {
+  it("should parse filter year eq", () => {
     const result = parser("$filter=year(foo) eq 2000", sequelize);
     expect(result).toMatchObject({
       where: {
@@ -194,7 +214,47 @@ describe("#odataParser", () => {
     });
   });
 
-  it("should parse filter month", () => {
+  it("should parse filter year eq string", () => {
+    const result = parser("$filter=year(foo) eq '2000'", sequelize);
+    expect(result).toMatchObject({
+      where: {
+        foo: {
+          attribute: {
+            args: [
+              {
+                col: "foo"
+              }
+            ],
+            fn: "year"
+          },
+          comparator: sequelize.Sequelize.Op.eq,
+          logic: '2000'
+        }
+      }
+    });
+  });
+
+  it("should parse filter year gt", () => {
+    const result = parser("$filter=year(foo) gt '2016'", sequelize);
+    expect(result).toMatchObject({
+      where: {
+        foo: {
+          attribute: {
+            args: [
+              {
+                col: "foo"
+              }
+            ],
+            fn: "year"
+          },
+          comparator: sequelize.Sequelize.Op.gt,
+          logic: '2016'
+        }
+      }
+    });
+  });
+
+  it("should parse filter month eq", () => {
     const result = parser("$filter=month(foo) eq 12", sequelize);
     expect(result).toMatchObject({
       where: {
@@ -214,7 +274,47 @@ describe("#odataParser", () => {
     });
   });
 
-  it("should parse filter day", () => {
+  it("should parse filter month ne", () => {
+    const result = parser("$filter=month(foo) ne 12", sequelize);
+    expect(result).toMatchObject({
+      where: {
+        foo: {
+          attribute: {
+            args: [
+              {
+                col: "foo"
+              }
+            ],
+            fn: "month"
+          },
+          comparator: sequelize.Sequelize.Op.ne,
+          logic: 12
+        }
+      }
+    });
+  });
+
+  it("should parse filter month gt", () => {
+    const result = parser("$filter=month(foo) gt 12", sequelize);
+    expect(result).toMatchObject({
+      where: {
+        foo: {
+          attribute: {
+            args: [
+              {
+                col: "foo"
+              }
+            ],
+            fn: "month"
+          },
+          comparator: sequelize.Sequelize.Op.gt,
+          logic: 12
+        }
+      }
+    });
+  });
+
+  it("should parse filter day eq", () => {
     const result = parser("$filter=day(foo) eq 12", sequelize);
     expect(result).toMatchObject({
       where: {
@@ -234,7 +334,27 @@ describe("#odataParser", () => {
     });
   });
 
-  it("should parse filter hour", () => {
+  it("should parse filter day gt", () => {
+    const result = parser("$filter=day(foo) gt 12", sequelize);
+    expect(result).toMatchObject({
+      where: {
+        foo: {
+          attribute: {
+            args: [
+              {
+                col: "foo"
+              }
+            ],
+            fn: "day"
+          },
+          comparator: sequelize.Sequelize.Op.gt,
+          logic: 12
+        }
+      }
+    });
+  });
+
+  it("should parse filter hour eq", () => {
     const result = parser("$filter=hour(foo) eq 12", sequelize);
     expect(result).toMatchObject({
       where: {
@@ -254,7 +374,27 @@ describe("#odataParser", () => {
     });
   });
 
-  it("should parse filter minute", () => {
+  it("should parse filter hour gt", () => {
+    const result = parser("$filter=hour(foo) gt 12", sequelize);
+    expect(result).toMatchObject({
+      where: {
+        foo: {
+          attribute: {
+            args: [
+              {
+                col: "foo"
+              }
+            ],
+            fn: "hour"
+          },
+          comparator: sequelize.Sequelize.Op.gt,
+          logic: 12
+        }
+      }
+    });
+  });
+
+  it("should parse filter minute eq", () => {
     const result = parser("$filter=minute(foo) eq 12", sequelize);
     expect(result).toMatchObject({
       where: {
@@ -274,7 +414,27 @@ describe("#odataParser", () => {
     });
   });
 
-  it("should parse filter second", () => {
+  it("should parse filter minute gt", () => {
+    const result = parser("$filter=minute(foo) gt 12", sequelize);
+    expect(result).toMatchObject({
+      where: {
+        foo: {
+          attribute: {
+            args: [
+              {
+                col: "foo"
+              }
+            ],
+            fn: "minute"
+          },
+          comparator: sequelize.Sequelize.Op.gt,
+          logic: 12
+        }
+      }
+    });
+  });
+
+  it("should parse filter second eq", () => {
     const result = parser("$filter=second(foo) eq 12", sequelize);
     expect(result).toMatchObject({
       where: {
@@ -288,6 +448,26 @@ describe("#odataParser", () => {
             fn: "second"
           },
           comparator: sequelize.Sequelize.Op.eq,
+          logic: 12
+        }
+      }
+    });
+  });
+
+  it("should parse filter second gt", () => {
+    const result = parser("$filter=second(foo) gt 12", sequelize);
+    expect(result).toMatchObject({
+      where: {
+        foo: {
+          attribute: {
+            args: [
+              {
+                col: "foo"
+              }
+            ],
+            fn: "second"
+          },
+          comparator: sequelize.Sequelize.Op.gt,
           logic: 12
         }
       }
@@ -408,11 +588,5 @@ describe("#odataParser", () => {
   it("should not parse with unknown function", () => {
     const result = parser("$filter=unknown(age) eq 42", sequelize);
     expect(result).toStrictEqual({});
-  });
-
-  it("should throw with unmapped function", () => {
-    expect(() => parser("$filter=endswith('foo', bar)", sequelize)).toThrow(
-      "Operator not recognized: endswith"
-    );
   });
 });
