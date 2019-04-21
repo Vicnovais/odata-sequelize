@@ -228,7 +228,7 @@ describe("#odataParser", () => {
             fn: "year"
           },
           comparator: sequelize.Sequelize.Op.eq,
-          logic: '2000'
+          logic: "2000"
         }
       }
     });
@@ -248,7 +248,7 @@ describe("#odataParser", () => {
             fn: "year"
           },
           comparator: sequelize.Sequelize.Op.gt,
-          logic: '2016'
+          logic: "2016"
         }
       }
     });
