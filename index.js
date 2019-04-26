@@ -31,6 +31,8 @@ const valueOperators = [
   "col"
 ];
 const customOperators = [
+  "ge",
+  "le",
   "substringof",
   "startswith",
   "tolower",
@@ -61,6 +63,10 @@ function getOperator(strOperator, sequelize) {
 
   if (!selectedOperator) {
     switch (strOperator) {
+      case "ge":
+        return sequelize.Sequelize.Op.gte;
+      case "le":
+        return sequelize.Sequelize.Op.lte;
       case "substringof":
       case "startswith":
         return sequelize.Sequelize.Op.like;
