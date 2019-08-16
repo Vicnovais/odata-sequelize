@@ -140,7 +140,7 @@ function parseFunction(obj, root, baseOperator, sequelize) {
 
   if (root instanceof Array && !dbFunction.includes(obj.func)) {
     const tmpObj = {};
-    tmpObj[operator] = [];
+    tmpObj[key] = {};
     root.push(tmpObj);
   } else if (root instanceof Array) {
     root.push({});
@@ -172,8 +172,8 @@ function parseFunction(obj, root, baseOperator, sequelize) {
 
   if (root instanceof Array) {
     if (!dbFunction.includes(obj.func)) {
-      tmp[key] = value;
-      root[root.length - 1][operator].push(tmp);
+//       tmp[key] = value;
+      root[root.length - 1][key][operator] = value;
     } else {
       root[root.length - 1] = tmp;
     }
@@ -206,7 +206,7 @@ function parseFunctionCall(obj, root, operator, sequelize) {
 
 function preOrderTraversal(root, baseObj, operator, sequelize) {
   const strOperator = root.type === "functioncall" ? root.func : root.type;
-  if (root.type !== "property" && root.type !== "literal" && root.type !== "functioncall")
+  if (root.type !== "property" && root.type !== "literal" )
     operator = strOperator ? getOperator(strOperator, sequelize) : operator;
 
   if (root.type === "functioncall") {
