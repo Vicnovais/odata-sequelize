@@ -114,6 +114,30 @@ describe("#odataParser", () => {
     });
   });
 
+  it("should parse filter datetime", () => {
+    const result = parser(
+      "$filter=Foo eq 'Test' and Date gt datetime'2012-09-27T21:12:59'",
+      sequelize
+    );
+
+    expect(result).toStrictEqual({
+      where: {
+        [sequelize.Sequelize.Op.and]: [
+          {
+            Foo: {
+              [sequelize.Sequelize.Op.eq]: "Test"
+            }
+          },
+          {
+            Date: {
+              [sequelize.Sequelize.Op.gt]: new Date("2012-09-27T21:12:59")
+            }
+          }
+        ]
+      }
+    });
+  });
+
   it("should parse filter substringof", () => {
     const result = parser("$filter=substringof('prefix', foo)", sequelize);
     expect(result).toStrictEqual({

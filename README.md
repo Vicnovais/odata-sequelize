@@ -1,5 +1,7 @@
 # odata-sequelize
 
+## Note: This is a temporary fork until [this PR](https://github.com/Vicnovais/odata-sequelize/pull/8) has been merged.
+
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Build Status](https://travis-ci.org/Vicnovais/odata-sequelize.svg?branch=master)](https://travis-ci.org/Vicnovais/odata-sequelize)
 
