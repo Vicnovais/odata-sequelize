@@ -148,7 +148,7 @@ describe("#odataParser", () => {
       }
     });
   });
-  
+
   it("should parse filter substringof with and", () => {
     const result = parser("$filter=substringof('lorem', foo) and bar eq 'Test'", sequelize);
     expect(result).toStrictEqual({
