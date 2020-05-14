@@ -1,5 +1,5 @@
 {
-  "name": "@wesselkuipers/odata-sequelize",
+  "name": "odata-sequelize",
   "version": "1.0.15",
   "description": "OData parser for Sequelize.JS",
   "main": "index.js",
