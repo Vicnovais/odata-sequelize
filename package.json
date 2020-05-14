@@ -1,6 +1,6 @@
 {
   "name": "odata-sequelize",
-  "version": "1.0.15",
+  "version": "1.0.20",
   "description": "OData parser for Sequelize.JS",
   "main": "index.js",
   "scripts": {
