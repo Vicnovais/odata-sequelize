@@ -134,7 +134,7 @@ function parseFunction(obj, root, baseOperator, sequelize) {
   const { args } = obj;
   const tmp = {};
   let value = "";
-  const operator = 
+  const operator =
     obj.func === "substringof"
       ? getOperator(obj.func, sequelize)
       : baseOperator || getOperator(obj.func, sequelize);
