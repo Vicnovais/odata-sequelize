@@ -148,6 +148,26 @@ describe("#odataParser", () => {
       }
     });
   });
+  
+  it("should parse filter substringof with and", () => {
+    const result = parser("$filter=substringof('lorem', foo) and bar eq 'Test'", sequelize);
+    expect(result).toStrictEqual({
+      where: {
+        [sequelize.Sequelize.Op.and]: [
+          {
+            foo: {
+              [sequelize.Sequelize.Op.like]: "%lorem%"
+            }
+          },
+          {
+            bar: {
+              [sequelize.Sequelize.Op.eq]: "Test"
+            }
+          }
+        ]
+      }
+    });
+  });
 
   it("should parse filter startswith", () => {
     const result = parser("$filter=startswith('prefix', foo)", sequelize);
