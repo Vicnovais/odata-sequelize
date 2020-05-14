@@ -212,7 +212,7 @@ function parseFunctionCall(obj, root, operator, sequelize) {
 
 function preOrderTraversal(root, baseObj, operator, sequelize) {
   const strOperator = root.type === "functioncall" ? root.func : root.type;
-  if (root.type !== "property" && root.type !== "literal")
+  if (root.type !== "property" && root.type !== "literal" && root.type !== "functioncall")
     operator = strOperator ? getOperator(strOperator, sequelize) : operator;
 
   if (root.type === "functioncall") {
