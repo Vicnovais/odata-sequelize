@@ -134,7 +134,7 @@ function parseFunction(obj, root, baseOperator, sequelize) {
   const { args } = obj;
   const tmp = {};
   let value = "";
-  const operator = baseOperator || getOperator(obj.func, sequelize);
+  const operator =  getOperator(obj.func, sequelize) || baseOperator;
   const key = args.filter(t => Object.prototype.hasOwnProperty.call(t, "name"))[0].name;
   const setValue = functionName => {
     if (root instanceof Array) {
