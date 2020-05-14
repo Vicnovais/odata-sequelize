@@ -137,7 +137,7 @@ function parseFunction(obj, root, baseOperator, sequelize) {
   const operator = 
     obj.func === "substringof"
       ? getOperator(obj.func, sequelize)
-      : (baseOperator || getOperator(obj.func, sequelize));
+      : baseOperator || getOperator(obj.func, sequelize);
   const key = args.filter(t => Object.prototype.hasOwnProperty.call(t, "name"))[0].name;
   const setValue = functionName => {
     if (root instanceof Array) {
