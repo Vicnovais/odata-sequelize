@@ -1,6 +1,7 @@
 # odata-sequelize
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+![npm](https://img.shields.io/npm/v/odata-sequelize)
 [![Build Status](https://travis-ci.org/Vicnovais/odata-sequelize.svg?branch=master)](https://travis-ci.org/Vicnovais/odata-sequelize)
 ![npm](https://img.shields.io/npm/dw/odata-sequelize)
 
