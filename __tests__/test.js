@@ -1,10 +1,68 @@
 const Sequelize = require("sequelize");
 
 const parser = require("../index");
+var grammar = require("../grammar.js");
 
 const sequelize = new Sequelize({ dialect: "sqlite" });
 
 describe("#odataParser", () => {
+  it('should parse $select grammar', function () {
+    var result = grammar.parse('$select=Foo');
+    expect(result).toStrictEqual({
+      attributes: ["Foo"]
+    });
+  });
+
+  it('should parse $select grammar with multiple selects', function () {
+    var result = grammar.parse('$select=Foo,Bar');
+    expect(result).toStrictEqual({
+      attributes: ["Foo", "Bar"]
+    });
+  });
+
+  it('should parse $top grammar', function () {
+    var result = grammar.parse('$top=5');
+    expect(result).toStrictEqual({
+      limit: 5
+    });
+  });
+
+  it('should parse $skip grammar', function () {
+    var result = grammar.parse('$skip=1');
+    expect(result).toStrictEqual({
+      offset: 1
+    });
+  });
+
+  it('should parse $top and $skip grammar', function () {
+    var result = grammar.parse('$top=5&$skip=1');
+    expect(result).toStrictEqual({
+      limit: 5,
+      offset: 1
+    });
+  });
+
+  it('should parse $orderby grammar', function () {
+    var result = grammar.parse('$orderby=Foo desc');
+    expect(result).toStrictEqual({
+      order: [
+        ['Foo', 'DESC']
+      ]
+    });
+  });
+
+  it('should parse multiple grammar', function () {
+    var result = grammar.parse('$select=Foo,Bar&$top=5&$skip=1&$orderby=Foo desc');
+    expect(result).toStrictEqual({
+      attributes: ["Foo", "Bar"],
+      limit: 5,
+      offset: 1,
+      order: [
+        ['Foo', 'DESC']
+      ]
+    });
+  });
+
   it("should parse top", () => {
     const result = parser("$top=10", sequelize);
     expect(result).toStrictEqual({

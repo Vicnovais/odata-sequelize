@@ -30,6 +30,8 @@
     "eslint-plugin-import": "^2.16.0",
     "eslint-plugin-prettier": "^3.0.1",
     "jest": "^24.7.1",
+    "mocha": "^7.1.2",
+    "pegjs": "^0.7.0",
     "prettier": "^1.16.4",
     "sequelize": "^5.19.1",
     "sqlite3": "^4.0.6"
