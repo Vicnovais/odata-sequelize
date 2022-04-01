@@ -44,7 +44,10 @@ describe("#odataParser", () => {
   it("should parse orderby with multiple columns", () => {
     const result = parser("$orderby=name desc,ranking", sequelize);
     expect(result).toStrictEqual({
-      order: [["name", "DESC"], ["ranking", "ASC"]]
+      order: [
+        ["name", "DESC"],
+        ["ranking", "ASC"]
+      ]
     });
   });
 
@@ -654,5 +657,26 @@ describe("#odataParser", () => {
   it("should not parse with unknown function", () => {
     const result = parser("$filter=unknown(age) eq 42", sequelize);
     expect(result).toStrictEqual({});
+  });
+
+  it("should parse filter with inner function", () => {
+    const result = parser("$filter=substringof('a',tolower(foo))", sequelize);
+
+    expect(result).toMatchObject({
+      where: {
+        foo: {
+          attribute: {
+            args: [
+              {
+                col: "foo"
+              }
+            ],
+            fn: "tolower"
+          },
+          comparator: sequelize.Sequelize.Op.like,
+          logic: "%a%"
+        }
+      }
+    });
   });
 });

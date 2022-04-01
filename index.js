@@ -138,7 +138,21 @@ function parseFunction(obj, root, baseOperator, sequelize) {
     obj.func === "substringof"
       ? getOperator(obj.func, sequelize)
       : baseOperator || getOperator(obj.func, sequelize);
-  const key = args.filter(t => Object.prototype.hasOwnProperty.call(t, "name"))[0].name;
+
+  let key = "";
+  const keyFilter = args.filter(t => {
+    return Object.prototype.hasOwnProperty.call(t, "name");
+  })[0];
+  let innerFuncName = "";
+
+  if (keyFilter) key = keyFilter.name;
+  else {
+    const innerFunc = args.filter(t => t.type === "functioncall");
+    if (innerFunc.length === 0) throw new Error("Unable to parse filter for args");
+    key = innerFunc[0].args[0].name;
+    innerFuncName = innerFunc[0].func;
+  }
+
   const setValue = functionName => {
     if (root instanceof Array) {
       tmp[key] = sequelize.where(sequelize.fn(functionName, sequelize.col(key)), operator, value);
@@ -160,6 +174,7 @@ function parseFunction(obj, root, baseOperator, sequelize) {
   switch (obj.func) {
     case "substringof":
       value = `%${args[0].value}%`;
+      if (innerFuncName) setValue(innerFuncName);
       break;
     case "startswith":
       value = `${args[0].value}%`;
@@ -186,7 +201,7 @@ function parseFunction(obj, root, baseOperator, sequelize) {
     } else {
       root[root.length - 1] = tmp;
     }
-  } else if (!dbFunction.includes(obj.func)) {
+  } else if (!dbFunction.includes(obj.func) && !innerFuncName) {
     root[key][operator] = value;
   }
 }
