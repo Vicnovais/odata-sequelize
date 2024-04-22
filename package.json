@@ -18,7 +18,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Vicnovais/odata-sequelize"
+    "url": "git+https://github.com/Vicnovais/odata-sequelize.git"
   },
   "dependencies": {
     "odata-parser": "^1.4.1"
