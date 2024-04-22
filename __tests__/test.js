@@ -183,6 +183,17 @@ describe("#odataParser", () => {
     });
   });
 
+  it("should parse filter endswith", () => {
+    const result = parser("$filter=endswith('sufix', foo)", sequelize);
+    expect(result).toStrictEqual({
+      where: {
+        foo: {
+          [sequelize.Sequelize.Op.like]: "%sufix"
+        }
+      }
+    });
+  });
+
   it("should parse filter tolower", () => {
     const result = parser("$filter=tolower(foo) eq 'bar'", sequelize);
     expect(result).toMatchObject({

@@ -1,6 +1,6 @@
 {
   "name": "odata-sequelize",
-  "version": "1.0.21",
+  "version": "1.0.22",
   "description": "OData parser for Sequelize.JS",
   "main": "index.js",
   "scripts": {
@@ -31,7 +31,6 @@
     "eslint-plugin-prettier": "^3.0.1",
     "jest": "^27.5.1",
     "prettier": "^1.16.4",
-    "sequelize": "^5.19.1",
-    "sqlite3": "^4.0.6"
+    "sequelize": "^6.37.3"
   }
 }

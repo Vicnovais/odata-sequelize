@@ -57,7 +57,7 @@ recursively iterated to build a new object that is compliant to sequelize's stan
 1. String Functions
 
 - [x] substringof
-- [ ] endswith
+- [x] endswith
 - [x] startswith
 - [x] tolower
 - [x] toupper
