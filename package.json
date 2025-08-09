@@ -1,8 +1,16 @@
 {
   "name": "odata-sequelize",
-  "version": "1.0.23",
-  "description": "OData parser for Sequelize.JS",
+  "version": "2.0.0",
+  "description": "Advanced OData v4 parser for Sequelize.JS with support for $expand, lambda expressions, navigation properties, and complex filters",
   "main": "index.js",
+  "types": "index.d.ts",
+  "files": [
+    "index.js",
+    "index.d.ts",
+    "odata-parser-generated.js",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
     "eslint": "eslint --max-warnings 0 .",
     "prettier": "prettier --list-different '{**/,}*.{json,md,yml,yaml}'",
@@ -11,8 +19,18 @@
   },
   "keywords": [
     "odata",
+    "odata-v4",
     "sequelize",
-    "sequelizejs"
+    "sequelizejs",
+    "orm",
+    "parser",
+    "query",
+    "filter",
+    "expand",
+    "lambda",
+    "navigation",
+    "sql",
+    "database"
   ],
   "author": "Victor Novais <vicnovais@gmail.com>",
   "license": "MIT",
@@ -20,8 +38,12 @@
     "type": "git",
     "url": "git+https://github.com/Vicnovais/odata-sequelize.git"
   },
-  "dependencies": {
-    "odata-parser": "^1.4.1"
+  "bugs": {
+    "url": "https://github.com/Vicnovais/odata-sequelize/issues"
+  },
+  "homepage": "https://github.com/Vicnovais/odata-sequelize#readme",
+  "engines": {
+    "node": ">=14.0.0"
   },
   "devDependencies": {
     "eslint": "^5.16.0",
@@ -30,7 +52,9 @@
     "eslint-plugin-import": "^2.16.0",
     "eslint-plugin-prettier": "^3.0.1",
     "jest": "^27.5.1",
+    "pegjs": "^0.10.0",
     "prettier": "^1.16.4",
-    "sequelize": "^6.37.3"
+    "sequelize": "^6.37.7",
+    "sqlite3": "^5.1.7"
   }
 }
